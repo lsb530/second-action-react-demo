@@ -1,0 +1,31 @@
+name: Deploy Project
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Install NodeJS # already installed in ubuntu-latest
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci # yarn install --immutable --immutable-cache --check-cache
+      - name: Run tests
+        run: npm test
+  deploy: # Parallel
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Install NodeJS # already installed in ubuntu-latest
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci # yarn install --immutable --immutable-cache --check-cache
+      - name: Build project
+        run: npm run build
+      - name: Deploy
+        run: echo "Deploying ..."
